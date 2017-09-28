@@ -12,13 +12,20 @@
 */
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
-$factory->define(App\User::class, function (Faker\Generator $faker) {
-    static $password;
+
+$factory->define(App\Motorist::class, function (Faker\Generator $faker) {
+    return [
+        'name' => $faker->firstName,
+        'surname' => $faker->lastName,
+    ];
+});
+
+$factory->define(App\Car::class, function (Faker\Generator $faker) {
+    $carMarkCount = \App\CarMark::count();
 
     return [
-        'name' => $faker->name,
-        'email' => $faker->unique()->safeEmail,
-        'password' => $password ?: $password = bcrypt('secret'),
-        'remember_token' => str_random(10),
+        'model' => rand(1, 99),
+        'description' => $faker->text(50),
+        'car_mark_id' => rand(1, $carMarkCount),
     ];
 });
