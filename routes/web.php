@@ -11,6 +11,23 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/', function() {
+    return redirect('/motorist');
 });
+
+Route::resource('/motorist', 'MotoristController', ['only' => ['index', 'show']]);
+
+Route::group(['middleware' => ['auth', 'admin'], 'prefix' => 'panel', 'namespace' => 'Panel'], function () {
+//    Route::get('tickets', 'TicketsController@index')->name('tickets.index');
+    Route::get('/', function() {
+        return redirect('panel/motorist');
+    });
+
+    Route::resource('motorist', 'MotoristController');
+    Route::resource('car', 'CarController');
+
+});
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
